@@ -1,0 +1,45 @@
+:root {
+    --background-green: #d1fae5;
+}
+
+@font-face {
+    font-family: wellfleet;
+    src: url('wellfleet-regular-webfont.woff'), url('wellfleet-regular-webfont.woff2');
+}
+
+body {
+    background-color: var(--background-green);
+    font-family: wellfleet;
+}
+
+.container {
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+}
+
+h1 {
+    text-align: center;
+    margin: 200px 0 0 0;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell {
+    font-size: xx-large;
+    height: max(100px, 10vh);
+    width: max(100px, 10vh);
+    border: 1px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
