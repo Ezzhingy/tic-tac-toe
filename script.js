@@ -1,8 +1,11 @@
 const startGame = (function () {
+    'use strict';
+
     let user = {};
 
     const resetFirst = function () {
-        user = {};
+        // resets board and brings up choosing section
+        for (let val in user) delete user[val];
         const playAgain = document.querySelector('.play-again');
         const chooseContainer = document.querySelector('.choose-container');
         const narrator = document.querySelector('.narrator');
@@ -15,10 +18,10 @@ const startGame = (function () {
     }
 
     const chooseScreen = function () {
+        // lets user choose to be X or O
         const playX = document.querySelector('.play-x');
         const playO = document.querySelector('.play-o');
 
-        
         playX.addEventListener('click', _setUserX);
         playO.addEventListener('click', _setUserO);
     }
@@ -48,8 +51,8 @@ const gameBoard = (function () {
     const gridContainer = document.querySelector('.grid-container');
 
     const newBoard = [[null, null, null],
-                   [null, null, null],
-                   [null, null, null]];
+                      [null, null, null],
+                      [null, null, null]];
 
     const displayBoard = function (board) {
         let count = 0;
@@ -77,8 +80,10 @@ const gameBoard = (function () {
 
                 captureRow.appendChild(cell);
             }
+
             tempContainer.appendChild(captureRow);
         }
+
         gridContainer.appendChild(tempContainer);
     }
 
@@ -88,20 +93,19 @@ const gameBoard = (function () {
     }
 
     const result = function (board, action) {
-        // returns the board that results from making move (i, j) on the board.
+        // returns the board that results from making move (i, j) on the board
         const copyBoard = JSON.parse(JSON.stringify(board));
-        // console.log(gameBoard.newBoard);
-        // console.log(action);
+
         if (copyBoard[action[0]][action[1]] !== null) {
             // ERROR
-            console.log("ERROR MESSAGE HERE");
-            
+            alert("INVALID MOVE");
         }
         copyBoard[action[0]][action[1]] = player.whichPlayer(board);
         return copyBoard;
     }
 
     const winner = function (board) {
+        // determines if there is a match winner
         for (let row = 0; row < board.length; row++) {
             if (board[row][0] === board[row][1] && board[row][0]=== board[row][2]) {
                 if (board[row][0] === 'X' || board[row][1] === 'X' || board[row][2] === 'X') {
@@ -169,7 +173,6 @@ const gameBoard = (function () {
     }
 
     return {displayBoard, resetBoard, result, winner, terminal, newBoard};
-
 })();
 
 const algo = (function () {
@@ -177,6 +180,7 @@ const algo = (function () {
     
     const _utility = function (board) {
         // return 1 if X won, -1 if O won, 0 otherwise
+
         if (gameBoard.winner(board) === 'X') {
             return 1;
         } else if (gameBoard.winner(board) === 'O') {
@@ -203,6 +207,7 @@ const algo = (function () {
                     arrayOfKeys.push(item[0])
                 }
             }
+
             const maxKey = Math.floor(Math.random() * arrayOfKeys.length);
             return arrayOfKeys[maxKey];
         } else {
@@ -211,12 +216,14 @@ const algo = (function () {
             }
             const allValues = Object.values(minObj);
             const minValue = Math.min(...allValues);
+
             const arrayOfKeys = [];
             for (let item of Object.entries(minObj)) {
                 if (item[1] === minValue) {
                     arrayOfKeys.push(item[0])
                 }
             }
+
             const minKey = Math.floor(Math.random() * arrayOfKeys.length);
             return arrayOfKeys[minKey];
         }
@@ -224,6 +231,7 @@ const algo = (function () {
 
     const _minValue = function (board) {
         // returns best possible value for O
+
         if (gameBoard.terminal(board)) {
             return _utility(board);
         }
@@ -236,6 +244,7 @@ const algo = (function () {
 
     const _maxValue = function (board) {
         // returns best possible value for X
+
         if (gameBoard.terminal(board)) {
             return _utility(board);
         }
@@ -250,8 +259,11 @@ const algo = (function () {
 })();
 
 const player = (function () {
+    'use strict';
 
     const whichPlayer = function (board) {
+        // determines whose turn it currently is
+
         let numX = 0;
         let numO = 0;
     
@@ -273,6 +285,8 @@ const player = (function () {
     }
 
     const actions = function (board) {
+        // returns all possible actions that can be made on board
+
         const allActions = [];
 
         for (let row = 0; row < board.length; row++) {
@@ -290,6 +304,8 @@ const player = (function () {
 })();
 
 const runGame = (function () {
+    'use strict';
+
     startGame.chooseScreen();
     
     const mainGame = function () {
@@ -300,8 +316,6 @@ const runGame = (function () {
         const userMove = function (e) {
             if (e.target.className === 'cell' && e.target.innerText === '') {
                 document.removeEventListener('click', userMove);
-
-                const gameOver = gameBoard.terminal(board);
                 
                 const cell = e.target.getAttribute('data-value');
                 let count = 0;
@@ -341,15 +355,13 @@ const runGame = (function () {
                 playAgain.addEventListener('click', startGame.resetFirst)
 
             } else if (startGame.user['user'] === currentPlayer) {
-                narrator.innerText = `Play as ${startGame.user['user']}`;
                 // user move
+
+                narrator.innerText = `Play as ${startGame.user['user']}`;
                 document.addEventListener('click', userMove);
-
             } else {
-                narrator.innerText = 'Computer thinking...';
-                _sleep(500);
-
                 // ai move
+                
                 if (startGame.user['user'] !== currentPlayer && !gameOver) {
                     if (aiTurn) {
                         let move = algo.minimax(board);
@@ -365,13 +377,8 @@ const runGame = (function () {
                 goGame();
             } 
         }
-        
         goGame();
     }
-
-    const _sleep = function (time) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-      }
 
     return {mainGame};
 })();
