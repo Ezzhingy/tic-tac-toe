@@ -1,5 +1,9 @@
 :root {
     --background-green: #d1fae5;
+    --pairing-green: #A3F5CB;
+    --line-green: #065f46;
+    --x-colour: #E5D1FA;
+    --o-colour: #FAE5D1;
 }
 
 @font-face {
@@ -12,12 +16,47 @@ body {
     font-family: wellfleet;
 }
 
-.container {
-    display: grid;
-    grid-template-rows: 1fr 2fr;
+.choose-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-h1 {
+.border {
+    display: flex;
+    gap: 50px;
+    border: 1px solid var(--line-green);
+    padding: 40px;
+    box-shadow: 60px -16px var(--line-green);
+}
+
+.choose-container button {
+    padding: 40px;
+}
+
+.choose-container .play-x {
+    background-color: var(--x-colour);
+}
+
+.choose-container .play-x:hover {
+    background-color: rgb(217, 188, 249);
+}
+
+.choose-container .play-o {
+    background-color: var(--o-colour);
+}
+
+.choose-container .play-o:hover {
+    background-color: #ffd2a8;
+}
+
+.container {
+    display: grid;
+    grid-template-rows: 1fr 2fr 0.5fr 0.5fr;
+    height: 100vh;
+}
+
+h1, h2 {
     text-align: center;
     margin: 200px 0 0 0;
 }
@@ -42,4 +81,45 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.cell:hover {
+    background-size:  100% 100%;
+    transform:scale(1.15);
+    transform-origin:center;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.play-again {
+    padding: 15px 40px 15px 40px;
+    background-color: var(--pairing-green);
+    display: none;
+}
+
+.play-again:hover {
+    background-color: #78ffb9;
+}
+
+.footer {
+    font-size: 1rem;
+    display: flex;
+    margin-top: auto;
+    justify-content: center;
+}
+
+.footer p {
+    text-align: center;
+}
+
+.footer a {
+    text-decoration: none;
+    color: black;
+}
+
+.footer a:hover {
+    font-weight: 700;
 }
