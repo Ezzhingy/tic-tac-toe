@@ -1,5 +1,5 @@
 # tic-tac-toe
-Tic-Tac-Toe game in browser
+Tic-Tac-Toe game in browser using the adversarial search algorithm, minimax
 
 Created using HTML, CSS, and JavaScript (including a tiny bit of JSON). From this project, I learned how to:
 - Create a more complex application involving a lot of Javascript and DOM manipulation
